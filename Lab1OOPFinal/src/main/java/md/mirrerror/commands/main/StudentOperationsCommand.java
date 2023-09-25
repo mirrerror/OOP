@@ -16,6 +16,7 @@ public class StudentOperationsCommand extends Command {
         System.out.println("Student operations");
         System.out.println("What do you want to do?");
         System.out.println();
+        System.out.println("No options available at the moment.");
         System.out.println();
         System.out.println("b - Back");
         System.out.println("q - Quit Program");

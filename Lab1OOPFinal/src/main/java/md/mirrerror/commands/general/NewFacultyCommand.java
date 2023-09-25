@@ -23,6 +23,18 @@ public class NewFacultyCommand extends Command {
             return;
         }
 
+        Faculty test1 = Main.getDataRegistry().searchFacultyByName(args[0]);
+        if(test1 != null) {
+            System.out.println("A faculty with the specified name already exist.");
+            return;
+        }
+
+        Faculty test2 = Main.getDataRegistry().searchFacultyByAbbreviation(args[1]);
+        if(test2 != null) {
+            System.out.println("A faculty with the specified abbreviation already exist.");
+            return;
+        }
+
         StudyField studyField;
         try {
             studyField = StudyField.match(args[2]);

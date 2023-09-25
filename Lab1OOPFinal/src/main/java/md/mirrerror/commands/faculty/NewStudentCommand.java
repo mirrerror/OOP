@@ -26,6 +26,12 @@ public class NewStudentCommand extends Command {
             return;
         }
 
+        Student test1 = Main.getDataRegistry().searchStudent(args[3]);
+        if(test1 != null) {
+            System.out.println("A student with the specified email already exists.");
+            return;
+        }
+
         int year, month, day;
 
         try {

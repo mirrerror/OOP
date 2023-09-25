@@ -22,6 +22,12 @@ public class BelongsToFacultyCommand extends Command {
             return;
         }
 
+        Faculty test1 = Main.getDataRegistry().searchFacultyByAbbreviation(args[0]);
+        if(test1 == null) {
+            System.out.println("Faculty with the specified abbreviation doesn't exist.");
+            return;
+        }
+
         Faculty faculty = Main.getDataRegistry().searchFacultyByStudentEmail(args[1]);
         if(faculty == null) {
             System.out.println("The specified student doesn't belong to the specified faculty.");
