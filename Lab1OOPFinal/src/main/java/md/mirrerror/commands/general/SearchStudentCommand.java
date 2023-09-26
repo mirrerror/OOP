@@ -1,6 +1,6 @@
 package md.mirrerror.commands.general;
 
-import md.mirrerror.AppState;
+import md.mirrerror.entities.AppState;
 import md.mirrerror.Main;
 import md.mirrerror.commands.Command;
 import md.mirrerror.entities.Faculty;
@@ -12,6 +12,8 @@ public class SearchStudentCommand extends Command {
 
     @Override
     public void onCommand(String[] args) {
+        Faculty faculty;
+
         if(Main.getAppState() != AppState.GENERAL_OPERATIONS) {
             System.out.println("Switch to the general operations branch first.");
             return;
@@ -22,7 +24,7 @@ public class SearchStudentCommand extends Command {
             return;
         }
 
-        Faculty faculty = Main.getDataRegistry().searchFacultyByStudentEmail(args[0]);
+        faculty = Main.getDataRegistry().searchFacultyByStudentEmail(args[0]);
 
         if(faculty == null) {
             System.out.println("Student with the specified email is not present in any currently registered faculties.");

@@ -13,6 +13,6 @@ public class QuitCommand extends Command {
         System.out.println("Saving the data...");
         Main.getDataRegistry().saveData();
         System.out.println("Disabling the app...");
-        System.exit(0);
+        Main.setAppEnabled(false);
     }
 }

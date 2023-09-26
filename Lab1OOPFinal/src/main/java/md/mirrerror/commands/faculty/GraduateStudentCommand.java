@@ -1,6 +1,7 @@
 package md.mirrerror.commands.faculty;
 
-import md.mirrerror.AppState;
+import md.mirrerror.data.DataValidator;
+import md.mirrerror.entities.AppState;
 import md.mirrerror.Main;
 import md.mirrerror.commands.Command;
 import md.mirrerror.entities.Student;
@@ -12,6 +13,8 @@ public class GraduateStudentCommand extends Command {
 
     @Override
     public void onCommand(String[] args) {
+        Student student;
+
         if(Main.getAppState() != AppState.FACULTY_OPERATIONS) {
             System.out.println("Switch to the faculty operations branch first.");
             return;
@@ -22,11 +25,9 @@ public class GraduateStudentCommand extends Command {
             return;
         }
 
-        Student student = Main.getDataRegistry().searchStudent(args[0]);
-        if(student == null) {
-            System.out.println("The student with the specified email doesn't exist.");
-            return;
-        }
+        student = Main.getDataRegistry().searchStudent(args[0]);
+
+        if(!DataValidator.validateStudent(student, true)) return;
 
         Main.getDataRegistry().graduateStudent(args[0]);
         System.out.println("Successfully graduated student " + student.getFirstName() + " " + student.getLastName() + ".");
