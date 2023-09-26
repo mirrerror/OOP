@@ -4,6 +4,8 @@ import md.mirrerror.entities.Faculty;
 import md.mirrerror.entities.Student;
 import md.mirrerror.entities.StudyField;
 
+import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,80 +13,78 @@ public class DataRegistry {
 
     private static List<Faculty> faculties;
 
-    public void loadData() {
+    public static void loadData() {
         faculties = new ArrayList<>();
-        /*try {
-            File file = new File("data.json");
+        try {
+            File file = new File("data.csv");
             if (!file.exists()) {
-                JSONArray emptyArray = new JSONArray();
-                try (FileWriter emptyFileWriter = new FileWriter(file)) {
-                    emptyArray.write(emptyFileWriter);
-                }
-            } else {
-                try (FileReader fileReader = new FileReader(file)) {
-                    JSONTokener tokener = new JSONTokener(fileReader);
-                    JSONArray jsonArray = new JSONArray(tokener);
+                file.createNewFile();
+                return;
+            }
 
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject facultyJson = jsonArray.getJSONObject(i);
-
-                        String name = facultyJson.getString("name");
-                        String abbreviation = facultyJson.getString("abbreviation");
-                        StudyField studyField = StudyField.valueOf(facultyJson.getString("studyField"));
-
-                        List<Student> students = new ArrayList<>();
-                        JSONArray studentsArray = facultyJson.getJSONArray("students");
-                        for (int j = 0; j < studentsArray.length(); j++) {
-                            JSONObject studentJson = studentsArray.getJSONObject(j);
-                            String firstName = studentJson.getString("firstName");
-                            String lastName = studentJson.getString("lastName");
-                            String email = studentJson.getString("email");
-                            LocalDate enrollmentDate = LocalDate.parse(studentJson.getString("enrollmentDate"));
-                            LocalDate dateOfBirth = LocalDate.parse(studentJson.getString("dateOfBirth"));
-                            boolean hasGraduated = studentJson.getBoolean("hasGraduated");
-
-                            students.add(new Student(firstName, lastName, email, enrollmentDate, dateOfBirth, hasGraduated));
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            while((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if(parts.length == 3 || parts.length == 4) { // format: name,abbreviation,studyField,students
+                    String name = parts[0].trim();
+                    String abbreviation = parts[1].trim();
+                    StudyField studyField = StudyField.match(parts[2].trim());
+                    List<Student> students = new ArrayList<>();
+                    if(parts.length == 4) {
+                        String[] studentData = parts[3].trim().split(";");
+                        for(String studentInfo : studentData) {
+                            String[] studentParts = studentInfo.split("~");
+                            if(studentParts.length == 6) { // format: firstName-lastName-email-enrollmentDate-dateOfBirth-hasGraduated
+                                String firstName = studentParts[0].trim();
+                                String lastName = studentParts[1].trim();
+                                String email = studentParts[2].trim();
+                                LocalDate enrollmentDate = LocalDate.parse(studentParts[3].trim());
+                                LocalDate dateOfBirth = LocalDate.parse(studentParts[4].trim());
+                                boolean hasGraduated = Boolean.parseBoolean(studentParts[5].trim());
+                                students.add(new Student(firstName, lastName, email, enrollmentDate, dateOfBirth, hasGraduated));
+                            }
                         }
-
-                        faculties.add(new Faculty(name, abbreviation, students, studyField));
                     }
+                    faculties.add(new Faculty(name, abbreviation, students, studyField));
                 }
             }
+            br.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
-    }
-
-    public void saveData() {
-        /*JSONArray jsonArray = new JSONArray();
-        for (Faculty faculty : faculties) {
-            JSONObject facultyJson = new JSONObject();
-            facultyJson.put("name", faculty.getName());
-            facultyJson.put("abbreviation", faculty.getAbbreviation());
-            facultyJson.put("studyField", faculty.getStudyField().toString());
-
-            JSONArray studentsArray = new JSONArray();
-            for (Student student : faculty.getStudents()) {
-                JSONObject studentJson = new JSONObject();
-                studentJson.put("firstName", student.getFirstName());
-                studentJson.put("lastName", student.getLastName());
-                studentJson.put("email", student.getEmail());
-                studentJson.put("enrollmentDate", student.getEnrollmentDate().toString());
-                studentJson.put("dateOfBirth", student.getDateOfBirth().toString());
-                studentJson.put("hasGraduated", student.hasGraduated());
-                studentsArray.put(studentJson);
-            }
-            facultyJson.put("students", studentsArray);
-            jsonArray.put(facultyJson);
         }
-
-        try (FileWriter fileWriter = new FileWriter("data.json")) {
-            jsonArray.write(fileWriter);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
     }
 
+    public static void saveData() {
+        try {
+            File file = new File("data.csv");
+            if(!file.exists()) file.createNewFile();
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+            for(Faculty faculty : faculties) {
+                StringBuilder facultyData = new StringBuilder();
+                facultyData.append(faculty.getName()).append(",");
+                facultyData.append(faculty.getAbbreviation()).append(",");
+                facultyData.append(faculty.getStudyField().name()).append(",");
+                List<Student> students = faculty.getStudents();
+                for(int i = 0; i < students.size(); i++) {
+                    Student student = students.get(i);
+                    facultyData.append(student.getFirstName()).append("~")
+                            .append(student.getLastName()).append("~")
+                            .append(student.getEmail()).append("~")
+                            .append(student.getEnrollmentDate()).append("~")
+                            .append(student.getDateOfBirth()).append("~")
+                            .append(student.hasGraduated());
+                    if(i < students.size() - 1) facultyData.append(";");
+                }
+                bw.write(facultyData.toString());
+                bw.newLine();
+            }
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void addNewFaculty(Faculty faculty) {
         faculties.add(faculty);

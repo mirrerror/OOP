@@ -41,3 +41,5 @@ build/
 /.gitignore
 /.idea/
 /Lab1OOPFinal/src/pom.xml
+/faculties.dat
+/data.csv
