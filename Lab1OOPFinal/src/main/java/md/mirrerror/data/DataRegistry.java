@@ -204,6 +204,7 @@ public class DataRegistry {
                 }
             }
         }
+        saveData();
     }
 
     public static List<Faculty> getFaculties() {
