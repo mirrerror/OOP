@@ -30,6 +30,8 @@ public class NewStudentCommand extends Command {
             return;
         }
 
+        if(!DataValidator.validateEmailString(args[3])) return;
+
         if(!DataValidator.validateStudent(Main.getDataRegistry().searchStudent(args[3]), false)) return;
 
         if(!DataValidator.validateDate(args[6], args[5], args[4])) return;
