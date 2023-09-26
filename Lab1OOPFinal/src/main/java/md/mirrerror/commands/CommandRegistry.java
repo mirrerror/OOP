@@ -16,6 +16,10 @@ public class CommandRegistry {
         registeredCommands.add(command);
     }
 
+    public void registerCommands(List<Command> commands) {
+        registeredCommands.addAll(commands);
+    }
+
     public static List<Command> getRegisteredCommands() {
         return Collections.unmodifiableList(registeredCommands);
     }

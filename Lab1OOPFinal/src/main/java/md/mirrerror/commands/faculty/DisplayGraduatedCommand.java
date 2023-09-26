@@ -1,6 +1,7 @@
 package md.mirrerror.commands.faculty;
 
-import md.mirrerror.AppState;
+import md.mirrerror.data.DataValidator;
+import md.mirrerror.entities.AppState;
 import md.mirrerror.Main;
 import md.mirrerror.commands.Command;
 import md.mirrerror.entities.Faculty;
@@ -12,6 +13,8 @@ public class DisplayGraduatedCommand extends Command {
 
     @Override
     public void onCommand(String[] args) {
+        Faculty faculty;
+
         if(Main.getAppState() != AppState.FACULTY_OPERATIONS) {
             System.out.println("Switch to the faculty operations branch first.");
             return;
@@ -22,11 +25,9 @@ public class DisplayGraduatedCommand extends Command {
             return;
         }
 
-        Faculty faculty = Main.getDataRegistry().searchFacultyByAbbreviation(args[0]);
-        if(faculty == null) {
-            System.out.println("The specified faculty doesn't exist.");
-            return;
-        }
+        faculty = Main.getDataRegistry().searchFacultyByAbbreviation(args[0]);
+
+        if(!DataValidator.validateFaculty(faculty, true)) return;
 
         Main.getDataRegistry().displayGraduatedStudents(faculty);
     }

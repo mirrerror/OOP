@@ -1,6 +1,7 @@
 package md.mirrerror.commands.general;
 
-import md.mirrerror.AppState;
+import md.mirrerror.data.DataValidator;
+import md.mirrerror.entities.AppState;
 import md.mirrerror.Main;
 import md.mirrerror.commands.Command;
 import md.mirrerror.entities.Faculty;
@@ -13,6 +14,9 @@ public class NewFacultyCommand extends Command {
 
     @Override
     public void onCommand(String[] args) {
+        Faculty faculty;
+        StudyField studyField;
+
         if(Main.getAppState() != AppState.GENERAL_OPERATIONS) {
             System.out.println("Switch to the general operations branch first.");
             return;
@@ -23,27 +27,14 @@ public class NewFacultyCommand extends Command {
             return;
         }
 
-        Faculty test1 = Main.getDataRegistry().searchFacultyByName(args[0]);
-        if(test1 != null) {
-            System.out.println("A faculty with the specified name already exist.");
-            return;
-        }
+        if(!DataValidator.validateFaculty(Main.getDataRegistry().searchFacultyByName(args[0]), false) ||
+        !DataValidator.validateFaculty(Main.getDataRegistry().searchFacultyByAbbreviation(args[1]), false)) return;
 
-        Faculty test2 = Main.getDataRegistry().searchFacultyByAbbreviation(args[1]);
-        if(test2 != null) {
-            System.out.println("A faculty with the specified abbreviation already exist.");
-            return;
-        }
+        if(!DataValidator.validateStudyField(args[2])) return;
 
-        StudyField studyField;
-        try {
-            studyField = StudyField.match(args[2]);
-        } catch (IllegalArgumentException ignored) {
-            System.out.println("Invalid faculty name. Available ones are: MECHANICAL_ENGINEERING, SOFTWARE_ENGINEERING, FOOD_TECHNOLOGY, URBANISM_ARCHITECTURE, VETERINARY_MEDICINE.");
-            return;
-        }
+        studyField = StudyField.match(args[2]);
+        faculty = new Faculty(args[0], args[1], studyField);
 
-        Faculty faculty = new Faculty(args[0], args[1], studyField);
         Main.getDataRegistry().addNewFaculty(faculty);
         System.out.println("Successfully registered a new faculty with name \"" + faculty.getName() + "\".");
     }

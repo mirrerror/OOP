@@ -6,48 +6,44 @@ import md.mirrerror.commands.general.DisplayFacultiesCommand;
 import md.mirrerror.commands.general.NewFacultyCommand;
 import md.mirrerror.commands.general.SearchStudentCommand;
 import md.mirrerror.commands.main.*;
+import md.mirrerror.data.DataRegistry;
+import md.mirrerror.entities.AppState;
+import md.mirrerror.utils.MenuUtils;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    private static boolean isAppEnabled;
     private static AppState appState;
     private static DataRegistry dataRegistry;
 
     public static void main(String[] args) {
+        isAppEnabled = true;
         appState = AppState.MAIN_MENU;
         CommandParser commandParser = new CommandParser();
         CommandRegistry commandRegistry = new CommandRegistry();
         dataRegistry = new DataRegistry();
+        Scanner scanner = new Scanner(System.in);
 
         dataRegistry.loadData();
 
-        commandRegistry.registerCommand(new QuitCommand());
-        commandRegistry.registerCommand(new BackCommand());
-        commandRegistry.registerCommand(new FacultyOperationsCommand());
-        commandRegistry.registerCommand(new GeneralOperationsCommand());
-        commandRegistry.registerCommand(new StudentOperationsCommand());
-        commandRegistry.registerCommand(new NewFacultyCommand());
-        commandRegistry.registerCommand(new SearchStudentCommand());
-        commandRegistry.registerCommand(new DisplayFacultiesCommand());
-        commandRegistry.registerCommand(new NewStudentCommand());
-        commandRegistry.registerCommand(new BelongsToFacultyCommand());
-        commandRegistry.registerCommand(new DisplayGraduatedCommand());
-        commandRegistry.registerCommand(new DisplayStudentsCommand());
-        commandRegistry.registerCommand(new GraduateStudentCommand());
+        commandRegistry.registerCommands(
+                List.of(
+                        new QuitCommand(), new BackCommand(), new FacultyOperationsCommand(),
+                        new GeneralOperationsCommand(), new StudentOperationsCommand(), new NewFacultyCommand(),
+                        new SearchStudentCommand(), new DisplayFacultiesCommand(), new NewStudentCommand(),
+                        new BelongsToFacultyCommand(), new DisplayGraduatedCommand(), new DisplayStudentsCommand(),
+                        new GraduateStudentCommand()
+                )
+        );
 
-        System.out.println("Welcome to TUM's student management system!");
-        System.out.println("What do you want to do?");
-        System.out.println("g - General operations");
-        System.out.println("f - Faculty operations");
-        System.out.println("s - Student operations");
-        System.out.println();
-        System.out.println("q - Quit program");
+        MenuUtils.sendMainMenu();
 
-        while(true) {
+        while(isAppEnabled) {
 
             boolean commandFound = false;
-            Scanner scanner = new Scanner(System.in);
-            String entry = scanner.next();
+            String entry = scanner.nextLine();
             for(Command command : CommandRegistry.getRegisteredCommands()) {
                 if(commandParser.getCommandLabel(entry).equalsIgnoreCase(command.getLabel())) {
                     command.onCommand(commandParser.parseArguments(entry));
@@ -59,6 +55,8 @@ public class Main {
             if(!commandFound) System.out.println("Unknown command.");
 
         }
+
+        scanner.close();
 
     }
 
@@ -72,5 +70,13 @@ public class Main {
 
     public static DataRegistry getDataRegistry() {
         return dataRegistry;
+    }
+
+    public static boolean isIsAppEnabled() {
+        return isAppEnabled;
+    }
+
+    public static void setAppEnabled(boolean isAppEnabled) {
+        Main.isAppEnabled = isAppEnabled;
     }
 }

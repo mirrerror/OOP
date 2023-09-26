@@ -36,7 +36,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
-/pom.xml
+/Lab1OOPFinal/src/pom.xml
 /data.json
 /.gitignore
 /.idea/
+/Lab1OOPFinal/src/pom.xml

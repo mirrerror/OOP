@@ -1,6 +1,7 @@
 package md.mirrerror.commands.general;
 
-import md.mirrerror.AppState;
+import md.mirrerror.data.DataValidator;
+import md.mirrerror.entities.AppState;
 import md.mirrerror.Main;
 import md.mirrerror.commands.Command;
 import md.mirrerror.entities.StudyField;
@@ -12,6 +13,8 @@ public class DisplayFacultiesCommand extends Command {
 
     @Override
     public void onCommand(String[] args) {
+        StudyField studyField;
+
         if(Main.getAppState() != AppState.GENERAL_OPERATIONS) {
             System.out.println("Switch to the general operations branch first.");
             return;
@@ -20,14 +23,8 @@ public class DisplayFacultiesCommand extends Command {
         if(args.length == 0) {
             Main.getDataRegistry().displayFaculties();
         } else {
-            StudyField studyField;
-            try {
-                studyField = StudyField.match(args[0]);
-            } catch (IllegalArgumentException ignored) {
-                System.out.println("Invalid faculty name. Available ones are: MECHANICAL_ENGINEERING, SOFTWARE_ENGINEERING, FOOD_TECHNOLOGY, URBANISM_ARCHITECTURE, VETERINARY_MEDICINE.");
-                return;
-            }
-
+            if(!DataValidator.validateStudyField(args[0])) return;
+            studyField = StudyField.match(args[0]);
             Main.getDataRegistry().displayFaculties(studyField);
         }
     }

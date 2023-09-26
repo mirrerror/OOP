@@ -1,12 +1,12 @@
 package md.mirrerror.commands.faculty;
 
-import md.mirrerror.AppState;
+import md.mirrerror.data.DataValidator;
+import md.mirrerror.entities.AppState;
 import md.mirrerror.Main;
 import md.mirrerror.commands.Command;
 import md.mirrerror.entities.Faculty;
 import md.mirrerror.entities.Student;
 
-import java.time.DateTimeException;
 import java.time.LocalDate;
 
 public class NewStudentCommand extends Command {
@@ -16,6 +16,10 @@ public class NewStudentCommand extends Command {
 
     @Override
     public void onCommand(String[] args) {
+        int year, month, day;
+        Student student;
+        Faculty faculty;
+
         if(Main.getAppState() != AppState.FACULTY_OPERATIONS) {
             System.out.println("Switch to the faculty operations branch first.");
             return;
@@ -26,36 +30,17 @@ public class NewStudentCommand extends Command {
             return;
         }
 
-        Student test1 = Main.getDataRegistry().searchStudent(args[3]);
-        if(test1 != null) {
-            System.out.println("A student with the specified email already exists.");
-            return;
-        }
+        if(!DataValidator.validateStudent(Main.getDataRegistry().searchStudent(args[3]), false)) return;
 
-        int year, month, day;
+        if(!DataValidator.validateDate(args[6], args[5], args[4])) return;
 
-        try {
-            year = Integer.parseInt(args[6]);
-            month = Integer.parseInt(args[5]);
-            day = Integer.parseInt(args[4]);
-        } catch (NumberFormatException ignored) {
-            System.out.println("You have specified a wrong date.");
-            return;
-        }
+        year = Integer.parseInt(args[6]);
+        month = Integer.parseInt(args[5]);
+        day = Integer.parseInt(args[4]);
+        student = new Student(args[1], args[2], args[3], LocalDate.now(), LocalDate.of(year, month, day), false);
+        faculty = Main.getDataRegistry().searchFacultyByAbbreviation(args[0]);
 
-        Student student;
-        try {
-            student = new Student(args[1], args[2], args[3], LocalDate.now(), LocalDate.of(year, month, day), false);
-        } catch (DateTimeException ignored) {
-            System.out.println("You have specified a wrong date.");
-            return;
-        }
-
-        Faculty faculty = Main.getDataRegistry().searchFacultyByAbbreviation(args[0]);
-        if(faculty == null) {
-            System.out.println("Faculty with this abbreviation doesn't exist.");
-            return;
-        }
+        if(!DataValidator.validateFaculty(faculty, true)) return;
 
         Main.getDataRegistry().addStudentToFaculty(student, args[0]);
         System.out.println("Successfully added a new student to the faculty " + faculty.getName() + ".");
