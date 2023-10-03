@@ -32,6 +32,7 @@ public class Main {
         dataRegistry = new DataRegistry();
         Scanner scanner = new Scanner(System.in);
         logger = new Logger(new File("applogs.log"));
+        logger.info("Started the app.");
 
         fileManager.loadData();
         logger.info("Loaded the data.");
