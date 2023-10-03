@@ -1,5 +1,6 @@
 package md.mirrerror.data;
 
+import md.mirrerror.Main;
 import md.mirrerror.entities.Faculty;
 import md.mirrerror.entities.Student;
 import md.mirrerror.entities.StudyField;
@@ -48,6 +49,7 @@ public class FileManager {
             }
             br.close();
         } catch (IOException e) {
+            Main.getLogger().error("Couldn't load the faculties from the file.");
             e.printStackTrace();
         }
     }
@@ -64,6 +66,7 @@ public class FileManager {
             }
             bw.close();
         } catch (IOException e) {
+            Main.getLogger().error("Couldn't save the faculties to the file.");
             e.printStackTrace();
         }
     }
@@ -91,6 +94,7 @@ public class FileManager {
             }
             br.close();
         } catch (IOException e) {
+            Main.getLogger().error("Couldn't load the students from the file.");
             e.printStackTrace();
         }
     }
@@ -109,6 +113,7 @@ public class FileManager {
                 bw.close();
             }
         } catch (IOException e) {
+            Main.getLogger().error("Couldn't save the students to the file.");
             e.printStackTrace();
         }
     }

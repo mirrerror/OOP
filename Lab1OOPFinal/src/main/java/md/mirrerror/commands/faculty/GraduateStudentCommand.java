@@ -31,5 +31,6 @@ public class GraduateStudentCommand extends Command {
 
         Main.getDataRegistry().graduateStudent(args[0]);
         System.out.println("Successfully graduated student " + student.getFirstName() + " " + student.getLastName() + ".");
+        Main.getLogger().info("Successfully graduated student " + student.getFirstName() + " " + student.getLastName() + ".");
     }
 }

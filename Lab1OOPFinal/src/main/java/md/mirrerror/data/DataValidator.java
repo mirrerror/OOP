@@ -61,12 +61,4 @@ public class DataValidator {
         }
     }
 
-    public static boolean validateEmailString(String email) {
-        if(email.contains("~")) {
-            System.out.println("An email can't contain the \"~\" characters.");
-            return false;
-        }
-        return true;
-    }
-
 }
