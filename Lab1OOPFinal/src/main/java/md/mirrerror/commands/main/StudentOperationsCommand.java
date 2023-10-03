@@ -12,7 +12,7 @@ public class StudentOperationsCommand extends Command {
 
     @Override
     public void onCommand(String[] args) {
-        Main.setAppState(AppState.STUDENT_OPERATIONS);
-        MenuUtils.sendStudentsMenu();
+        Main.setAppState(AppState.STUDENT_OPERATIONS_MENU);
+        MenuUtils.sendStudentsMenuHelpMessage();
     }
 }

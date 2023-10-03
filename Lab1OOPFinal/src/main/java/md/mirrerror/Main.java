@@ -7,6 +7,7 @@ import md.mirrerror.commands.general.NewFacultyCommand;
 import md.mirrerror.commands.general.SearchStudentCommand;
 import md.mirrerror.commands.main.*;
 import md.mirrerror.data.DataRegistry;
+import md.mirrerror.data.FileManager;
 import md.mirrerror.entities.AppState;
 import md.mirrerror.utils.MenuUtils;
 
@@ -17,16 +18,18 @@ public class Main {
     private static boolean isAppEnabled;
     private static AppState appState;
     private static DataRegistry dataRegistry;
+    private static FileManager fileManager;
 
     public static void main(String[] args) {
         isAppEnabled = true;
         appState = AppState.MAIN_MENU;
         CommandParser commandParser = new CommandParser();
         CommandRegistry commandRegistry = new CommandRegistry();
+        fileManager = new FileManager(DataRegistry.getFaculties());
         dataRegistry = new DataRegistry();
         Scanner scanner = new Scanner(System.in);
 
-        dataRegistry.loadData();
+        fileManager.loadData();
 
         commandRegistry.registerCommands(
                 List.of(
@@ -38,7 +41,7 @@ public class Main {
                 )
         );
 
-        MenuUtils.sendMainMenu();
+        MenuUtils.sendMainMenuHelpMessage();
 
         while(isAppEnabled) {
 
@@ -78,5 +81,9 @@ public class Main {
 
     public static void setAppEnabled(boolean isAppEnabled) {
         Main.isAppEnabled = isAppEnabled;
+    }
+
+    public static FileManager getFileManager() {
+        return fileManager;
     }
 }

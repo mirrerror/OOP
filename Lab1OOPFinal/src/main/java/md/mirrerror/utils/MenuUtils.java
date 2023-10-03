@@ -2,7 +2,7 @@ package md.mirrerror.utils;
 
 public class MenuUtils {
 
-    public static void sendMainMenu() {
+    public static void sendMainMenuHelpMessage() {
         System.out.println("""
                 Welcome to TUM's student management system!
                 What do you want to do?
@@ -15,7 +15,7 @@ public class MenuUtils {
                 """);
     }
 
-    public static void sendFacultyMenu() {
+    public static void sendFacultyMenuHelpMessage() {
         System.out.println("""
                         Faculty operations
                         What do you want to do?
@@ -31,7 +31,7 @@ public class MenuUtils {
                         """);
     }
 
-    public static void sendGeneralMenu() {
+    public static void sendGeneralMenuHelpMessage() {
         System.out.println("""
                 General operations
                 What do you want to do?
@@ -46,7 +46,7 @@ public class MenuUtils {
                 """);
     }
 
-    public static void sendStudentsMenu() {
+    public static void sendStudentsMenuHelpMessage() {
         System.out.println("""
                 Student operations
                 What do you want to do?

@@ -15,7 +15,7 @@ public class GraduateStudentCommand extends Command {
     public void onCommand(String[] args) {
         Student student;
 
-        if(Main.getAppState() != AppState.FACULTY_OPERATIONS) {
+        if(Main.getAppState() != AppState.FACULTY_OPERATIONS_MENU) {
             System.out.println("Switch to the faculty operations branch first.");
             return;
         }

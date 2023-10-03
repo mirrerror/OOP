@@ -12,7 +12,7 @@ public class GeneralOperationsCommand extends Command {
 
     @Override
     public void onCommand(String[] args) {
-        Main.setAppState(AppState.GENERAL_OPERATIONS);
-        MenuUtils.sendGeneralMenu();
+        Main.setAppState(AppState.GENERAL_OPERATIONS_MENU);
+        MenuUtils.sendGeneralMenuHelpMessage();
     }
 }

@@ -11,7 +11,7 @@ public class QuitCommand extends Command {
     @Override
     public void onCommand(String[] args) {
         System.out.println("Saving the data...");
-        Main.getDataRegistry().saveData();
+        Main.getFileManager().saveData();
         System.out.println("Disabling the app...");
         Main.setAppEnabled(false);
     }

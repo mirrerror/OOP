@@ -14,7 +14,7 @@ public class SearchStudentCommand extends Command {
     public void onCommand(String[] args) {
         Faculty faculty;
 
-        if(Main.getAppState() != AppState.GENERAL_OPERATIONS) {
+        if(Main.getAppState() != AppState.GENERAL_OPERATIONS_MENU) {
             System.out.println("Switch to the general operations branch first.");
             return;
         }

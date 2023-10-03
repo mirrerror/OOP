@@ -1,94 +1,19 @@
 package md.mirrerror.data;
 
+import md.mirrerror.Main;
 import md.mirrerror.entities.Faculty;
 import md.mirrerror.entities.Student;
 import md.mirrerror.entities.StudyField;
 
-import java.io.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class DataRegistry {
 
-    private static List<Faculty> faculties;
-
-    public static void loadData() {
-        faculties = new ArrayList<>();
-        try {
-            File file = new File("data.csv");
-            if (!file.exists()) {
-                file.createNewFile();
-                return;
-            }
-
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String line;
-            while((line = br.readLine()) != null) {
-                String[] parts = line.split(",");
-                if(parts.length == 3 || parts.length == 4) { // format: name,abbreviation,studyField,students
-                    String name = parts[0].trim();
-                    String abbreviation = parts[1].trim();
-                    StudyField studyField = StudyField.match(parts[2].trim());
-                    List<Student> students = new ArrayList<>();
-                    if(parts.length == 4) {
-                        String[] studentData = parts[3].trim().split(";");
-                        for(String studentInfo : studentData) {
-                            String[] studentParts = studentInfo.split("~");
-                            if(studentParts.length == 6) { // format: firstName-lastName-email-enrollmentDate-dateOfBirth-hasGraduated
-                                String firstName = studentParts[0].trim();
-                                String lastName = studentParts[1].trim();
-                                String email = studentParts[2].trim();
-                                LocalDate enrollmentDate = LocalDate.parse(studentParts[3].trim());
-                                LocalDate dateOfBirth = LocalDate.parse(studentParts[4].trim());
-                                boolean hasGraduated = Boolean.parseBoolean(studentParts[5].trim());
-                                students.add(new Student(firstName, lastName, email, enrollmentDate, dateOfBirth, hasGraduated));
-                            }
-                        }
-                    }
-                    faculties.add(new Faculty(name, abbreviation, students, studyField));
-                }
-            }
-            br.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void saveData() {
-        try {
-            File file = new File("data.csv");
-            if(!file.exists()) file.createNewFile();
-
-            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-            for(Faculty faculty : faculties) {
-                StringBuilder facultyData = new StringBuilder();
-                facultyData.append(faculty.getName()).append(",");
-                facultyData.append(faculty.getAbbreviation()).append(",");
-                facultyData.append(faculty.getStudyField().name()).append(",");
-                List<Student> students = faculty.getStudents();
-                for(int i = 0; i < students.size(); i++) {
-                    Student student = students.get(i);
-                    facultyData.append(student.getFirstName()).append("~")
-                            .append(student.getLastName()).append("~")
-                            .append(student.getEmail()).append("~")
-                            .append(student.getEnrollmentDate()).append("~")
-                            .append(student.getDateOfBirth()).append("~")
-                            .append(student.hasGraduated());
-                    if(i < students.size() - 1) facultyData.append(";");
-                }
-                bw.write(facultyData.toString());
-                bw.newLine();
-            }
-            bw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private static List<Faculty> faculties = new ArrayList<>();
 
     public void addNewFaculty(Faculty faculty) {
         faculties.add(faculty);
-        saveData();
+        Main.getFileManager().saveData();
     }
 
     public void addStudentToFaculty(Student student, String facultyAbbreviation) {
@@ -98,7 +23,7 @@ public class DataRegistry {
                 break;
             }
         }
-        saveData();
+        Main.getFileManager().saveData();
     }
 
     public Student searchStudent(String email) {
@@ -204,7 +129,21 @@ public class DataRegistry {
                 }
             }
         }
-        saveData();
+        Main.getFileManager().saveData();
+    }
+
+    public int findFirstAvailableId() {
+        Set<Integer> ids = new TreeSet<>();
+        for(Faculty faculty : faculties) ids.add(faculty.getId());
+        int prevId = -1;
+        for(int id : ids) {
+            if(prevId == -1) {
+                prevId = id;
+                continue;
+            }
+            if(id - prevId > 1) return prevId + 1;
+        }
+        return ids.size();
     }
 
     public static List<Faculty> getFaculties() {
