@@ -43,32 +43,31 @@ public class Main {
                         new GeneralOperationsCommand(), new StudentOperationsCommand(), new NewFacultyCommand(),
                         new SearchStudentCommand(), new DisplayFacultiesCommand(), new NewStudentCommand(),
                         new BelongsToFacultyCommand(), new DisplayGraduatedCommand(), new DisplayStudentsCommand(),
-                        new GraduateStudentCommand()
+                        new GraduateStudentCommand(), new BatchUpdateCommand()
                 )
         );
         logger.info("Registered the commands.");
 
         MenuUtils.sendMainMenuHelpMessage();
 
-        while(isAppEnabled) {
-
-            boolean commandFound = false;
-            String entry = scanner.nextLine();
-            for(Command command : CommandRegistry.getRegisteredCommands()) {
-                if(commandParser.getCommandLabel(entry).equalsIgnoreCase(command.getLabel())) {
-                    command.onCommand(commandParser.parseArguments(entry));
-                    commandFound = true;
-                    break;
-                }
-            }
-
-            if(!commandFound) System.out.println("Unknown command.");
-
-        }
+        while(isAppEnabled) executeCommand(commandParser, scanner.nextLine());
 
         scanner.close();
 
         logger.info("Stopped the app.");
+    }
+
+    public static void executeCommand(CommandParser commandParser, String commandString) {
+        boolean commandFound = false;
+        for(Command command : CommandRegistry.getRegisteredCommands()) {
+            if(commandParser.getCommandLabel(commandString).equalsIgnoreCase(command.getLabel())) {
+                command.onCommand(commandParser.parseArguments(commandString));
+                commandFound = true;
+                break;
+            }
+        }
+
+        if(!commandFound) System.out.println("Unknown command.");
     }
 
     public static AppState getAppState() {

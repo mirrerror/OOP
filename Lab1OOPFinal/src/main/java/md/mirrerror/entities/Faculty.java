@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Faculty {
 
-    private int id;
+    private final int id;
     private String name, abbreviation;
     private List<Student> students;
     private StudyField studyField;

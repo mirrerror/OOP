@@ -9,7 +9,7 @@ import java.util.*;
 
 public class DataRegistry {
 
-    private static List<Faculty> faculties = new ArrayList<>();
+    private static final List<Faculty> faculties = new ArrayList<>();
 
     public void addNewFaculty(Faculty faculty) {
         faculties.add(faculty);

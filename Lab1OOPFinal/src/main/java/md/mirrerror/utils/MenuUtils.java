@@ -25,6 +25,7 @@ public class MenuUtils {
                         ds/<faculty abbreviation> - display enrolled students
                         dg/<faculty abbreviation> - display graduated students
                         bf/<faculty abbreviation>/<email> - check if student belongs to faculty
+                        bu/<file name> - perform a batch update
                         
                         b - Back
                         q - Quit Program
@@ -40,6 +41,7 @@ public class MenuUtils {
                 ss/<student email> - search student and show faculty
                 df - display faculties
                 df/field - display all faculties of a field
+                bu/<file name> - perform a batch update
                 
                 b - Back
                 q - Quit Program
@@ -51,7 +53,7 @@ public class MenuUtils {
                 Student operations
                 What do you want to do?
                 
-                No options available at the moment.
+                bu/<file name> - perform a batch update
                 
                 b - Back
                 q - Quit Program

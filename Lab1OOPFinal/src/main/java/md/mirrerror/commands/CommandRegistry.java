@@ -6,7 +6,7 @@ import java.util.List;
 
 public class CommandRegistry {
 
-    private static List<Command> registeredCommands;
+    private static final List<Command> registeredCommands;
 
     static {
         registeredCommands = new ArrayList<>();
