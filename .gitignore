@@ -40,6 +40,7 @@ build/
 /data.json
 /.gitignore
 /.idea/
-/Lab1OOPFinal/src/pom.xml
 /faculties.dat
 /data.csv
+/faculties.csv
+/students.csv
