@@ -9,8 +9,10 @@ import md.mirrerror.commands.main.*;
 import md.mirrerror.data.DataRegistry;
 import md.mirrerror.data.FileManager;
 import md.mirrerror.entities.AppState;
+import md.mirrerror.logging.Logger;
 import md.mirrerror.utils.MenuUtils;
 
+import java.io.File;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,6 +21,7 @@ public class Main {
     private static AppState appState;
     private static DataRegistry dataRegistry;
     private static FileManager fileManager;
+    private static Logger logger;
 
     public static void main(String[] args) {
         isAppEnabled = true;
@@ -28,8 +31,10 @@ public class Main {
         fileManager = new FileManager(DataRegistry.getFaculties());
         dataRegistry = new DataRegistry();
         Scanner scanner = new Scanner(System.in);
+        logger = new Logger(new File("applogs.log"));
 
         fileManager.loadData();
+        logger.info("Loaded the data.");
 
         commandRegistry.registerCommands(
                 List.of(
@@ -40,6 +45,7 @@ public class Main {
                         new GraduateStudentCommand()
                 )
         );
+        logger.info("Registered the commands.");
 
         MenuUtils.sendMainMenuHelpMessage();
 
@@ -61,6 +67,7 @@ public class Main {
 
         scanner.close();
 
+        logger.info("Stopped the app.");
     }
 
     public static AppState getAppState() {
@@ -85,5 +92,9 @@ public class Main {
 
     public static FileManager getFileManager() {
         return fileManager;
+    }
+
+    public static Logger getLogger() {
+        return logger;
     }
 }

@@ -30,8 +30,6 @@ public class NewStudentCommand extends Command {
             return;
         }
 
-        if(!DataValidator.validateEmailString(args[3])) return;
-
         if(!DataValidator.validateStudent(Main.getDataRegistry().searchStudent(args[3]), false)) return;
 
         if(!DataValidator.validateDate(args[6], args[5], args[4])) return;
@@ -46,5 +44,6 @@ public class NewStudentCommand extends Command {
 
         Main.getDataRegistry().addStudentToFaculty(student, args[0]);
         System.out.println("Successfully added a new student to the faculty " + faculty.getName() + ".");
+        Main.getLogger().info("Successfully added a new student to the faculty " + faculty.getName() + ".");
     }
 }

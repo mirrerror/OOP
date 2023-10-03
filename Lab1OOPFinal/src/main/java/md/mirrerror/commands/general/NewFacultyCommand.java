@@ -37,5 +37,6 @@ public class NewFacultyCommand extends Command {
 
         Main.getDataRegistry().addNewFaculty(faculty);
         System.out.println("Successfully registered a new faculty with name \"" + faculty.getName() + "\".");
+        Main.getLogger().info("Successfully registered a new faculty with name \"" + faculty.getName() + "\".");
     }
 }
