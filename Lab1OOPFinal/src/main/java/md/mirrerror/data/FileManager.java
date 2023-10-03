@@ -36,10 +36,7 @@ public class FileManager {
         faculties.clear();
         try {
             File file = new File(FACULTIES_DATA_FILE);
-            if (!file.exists()) {
-                file.createNewFile();
-                return;
-            }
+            if(createFileIfNeeded(file)) return;
 
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
@@ -56,7 +53,10 @@ public class FileManager {
 
     public void saveFaculties() {
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(FACULTIES_DATA_FILE));
+            File file = new File(FACULTIES_DATA_FILE);
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+            createFileIfNeeded(file);
+
             for (Faculty faculty : faculties) {
                 String formattedFaculty = formatFaculty(faculty);
                 if (formattedFaculty != null) {
@@ -74,10 +74,7 @@ public class FileManager {
     public void loadStudents() {
         try {
             File file = new File(STUDENTS_DATA_FILE);
-            if (!file.exists()) {
-                file.createNewFile();
-                return;
-            }
+            if(createFileIfNeeded(file)) return;
 
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
@@ -101,7 +98,10 @@ public class FileManager {
 
     public void saveStudents() {
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(STUDENTS_DATA_FILE));
+            File file = new File(STUDENTS_DATA_FILE);
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+            createFileIfNeeded(file);
+
             for(Faculty faculty : faculties) {
                 for (Student student : faculty.getStudents()) {
                     String formattedStudent = formatStudent(student, faculty.getId());
@@ -163,5 +163,19 @@ public class FileManager {
                 student.getDateOfBirth(),
                 student.hasGraduated()
         );
+    }
+
+    private boolean createFileIfNeeded(File file) {
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+                Main.getLogger().info("Couldn't find the file \"" + file.getName() + "\". Created a new one instead.");
+                return true;
+            }
+        } catch (IOException e) {
+            Main.getLogger().error("Couldn't create the file \"" + file.getName() + "\".");
+            e.printStackTrace();
+        }
+        return false;
     }
 }
