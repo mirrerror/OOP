@@ -18,6 +18,6 @@ public class BackCommand extends Command {
         }
 
         Main.setAppState(AppState.MAIN_MENU);
-        MenuUtils.sendMainMenu();
+        MenuUtils.sendMainMenuHelpMessage();
     }
 }

@@ -5,18 +5,21 @@ import java.util.List;
 
 public class Faculty {
 
+    private int id;
     private String name, abbreviation;
     private List<Student> students;
     private StudyField studyField;
 
-    public Faculty(String name, String abbreviation, List<Student> students, StudyField studyField) {
+    public Faculty(int id, String name, String abbreviation, List<Student> students, StudyField studyField) {
+        this.id = id;
         this.name = name;
         this.abbreviation = abbreviation;
         this.students = students;
         this.studyField = studyField;
     }
 
-    public Faculty(String name, String abbreviation, StudyField studyField) {
+    public Faculty(int id, String name, String abbreviation, StudyField studyField) {
+        this.id = id;
         this.name = name;
         this.abbreviation = abbreviation;
         this.students = new ArrayList<>();
@@ -53,5 +56,9 @@ public class Faculty {
 
     public void setStudyField(StudyField studyField) {
         this.studyField = studyField;
+    }
+
+    public int getId() {
+        return id;
     }
 }

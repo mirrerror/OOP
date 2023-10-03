@@ -15,7 +15,7 @@ public class DisplayFacultiesCommand extends Command {
     public void onCommand(String[] args) {
         StudyField studyField;
 
-        if(Main.getAppState() != AppState.GENERAL_OPERATIONS) {
+        if(Main.getAppState() != AppState.GENERAL_OPERATIONS_MENU) {
             System.out.println("Switch to the general operations branch first.");
             return;
         }

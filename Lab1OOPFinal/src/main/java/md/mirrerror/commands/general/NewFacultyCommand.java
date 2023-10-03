@@ -17,7 +17,7 @@ public class NewFacultyCommand extends Command {
         Faculty faculty;
         StudyField studyField;
 
-        if(Main.getAppState() != AppState.GENERAL_OPERATIONS) {
+        if(Main.getAppState() != AppState.GENERAL_OPERATIONS_MENU) {
             System.out.println("Switch to the general operations branch first.");
             return;
         }
@@ -33,7 +33,7 @@ public class NewFacultyCommand extends Command {
         if(!DataValidator.validateStudyField(args[2])) return;
 
         studyField = StudyField.match(args[2]);
-        faculty = new Faculty(args[0], args[1], studyField);
+        faculty = new Faculty(Main.getDataRegistry().findFirstAvailableId(), args[0], args[1], studyField);
 
         Main.getDataRegistry().addNewFaculty(faculty);
         System.out.println("Successfully registered a new faculty with name \"" + faculty.getName() + "\".");

@@ -20,7 +20,7 @@ public class NewStudentCommand extends Command {
         Student student;
         Faculty faculty;
 
-        if(Main.getAppState() != AppState.FACULTY_OPERATIONS) {
+        if(Main.getAppState() != AppState.FACULTY_OPERATIONS_MENU) {
             System.out.println("Switch to the faculty operations branch first.");
             return;
         }

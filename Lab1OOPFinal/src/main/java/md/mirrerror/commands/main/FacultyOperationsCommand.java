@@ -12,7 +12,7 @@ public class FacultyOperationsCommand extends Command {
 
     @Override
     public void onCommand(String[] args) {
-        Main.setAppState(AppState.FACULTY_OPERATIONS);
-        MenuUtils.sendFacultyMenu();
+        Main.setAppState(AppState.FACULTY_OPERATIONS_MENU);
+        MenuUtils.sendFacultyMenuHelpMessage();
     }
 }
