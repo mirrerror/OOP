@@ -110,8 +110,8 @@ public class FileManager {
                         bw.newLine();
                     }
                 }
-                bw.close();
             }
+            bw.close();
         } catch (IOException e) {
             Main.getLogger().error("Couldn't save the students to the file.");
             e.printStackTrace();
