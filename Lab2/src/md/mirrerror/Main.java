@@ -37,7 +37,10 @@ public class Main {
 
         repository = repositoryManager.registerRepository(new File("testrepo"));
 
+        sendHelpMessage();
+
         while(isAppEnabled) {
+
             String commandString = scanner.nextLine();
             boolean commandFound = false;
 
@@ -53,6 +56,20 @@ public class Main {
         }
 
         scanner.close();
+    }
+
+    private static void sendHelpMessage() {
+        System.out.println("""
+                
+                Welcome to the repository management application.
+                
+                Available commands:
+                - commit - commit the changes
+                - info <file name> - get info about a specific file from the repository
+                - status - get info about the status of the files in the repository
+                - q - exit the application
+                
+                """);
     }
 
     public static boolean isAppEnabled() {
