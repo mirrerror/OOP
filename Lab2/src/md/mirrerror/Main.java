@@ -9,6 +9,7 @@ import md.mirrerror.commands.main.QuitCommand;
 import md.mirrerror.commands.main.StatusCommand;
 import md.mirrerror.entities.Repository;
 import md.mirrerror.managers.RepositoryManager;
+import md.mirrerror.tasks.FileCheckTask;
 
 import java.io.File;
 import java.util.List;
@@ -18,6 +19,7 @@ public class Main {
 
     private static boolean isAppEnabled;
     private static Repository repository;
+    private static FileCheckTask fileCheckTask;
 
     public static void main(String[] args) {
         isAppEnabled = true;
@@ -25,6 +27,7 @@ public class Main {
         CommandParser commandParser = new CommandParser();
         CommandRegistry commandRegistry = new CommandRegistry();
         RepositoryManager repositoryManager = new RepositoryManager();
+        fileCheckTask = new FileCheckTask();
 
         commandRegistry.registerCommands(
                 List.of(
@@ -38,6 +41,8 @@ public class Main {
         repository = repositoryManager.registerRepository(new File("testrepo"));
 
         sendHelpMessage();
+
+        fileCheckTask.initialize();
 
         while(isAppEnabled) {
 
@@ -55,6 +60,8 @@ public class Main {
             if(!commandFound) System.out.println("Unknown command.");
         }
 
+        fileCheckTask.cancel();
+        fileCheckTask.getFileCheckTimer().cancel();
         scanner.close();
     }
 
@@ -82,5 +89,9 @@ public class Main {
 
     public static Repository getRepository() {
         return repository;
+    }
+
+    public static FileCheckTask getFileCheckTask() {
+        return fileCheckTask;
     }
 }
