@@ -1,5 +1,6 @@
 package md.mirrerror.entities;
 
+import md.mirrerror.Main;
 import md.mirrerror.utils.FileUtils;
 
 import java.io.File;
@@ -25,6 +26,7 @@ public class Repository {
         latestSnapshotDateTime = LocalDateTime.now();
         latestSnapshotFiles = new HashSet<>();
         for(File file : FileUtils.getAllFilesFromDirectory(directory)) latestSnapshotFiles.add(file.getName());
+        Main.getFileCheckTask().clearCache();
     }
 
     public void printInfo(File file) {
@@ -62,21 +64,10 @@ public class Repository {
     public void printStatus() {
         System.out.println("Created the snapshot at: " + latestSnapshotDateTime);
         try {
-            Set<String> currentFiles = new HashSet<>();
-            Set<String> lastFiles = new HashSet<>(latestSnapshotFiles);
+            Set<String> newFiles = getCreatedFiles();
+            Set<String> deletedFiles = getDeletedFiles();
 
-            for(File file : FileUtils.getAllFilesFromDirectory(directory)) currentFiles.add(file.getName());
-
-            Set<String> newFiles = new HashSet<>();
-            for(String file : currentFiles)
-                if(!lastFiles.contains(file))
-                    newFiles.add(file);
             for(String entry : newFiles) System.out.println(entry + " - new file");
-
-            Set<String> deletedFiles = new HashSet<>();
-            for(String file : lastFiles)
-                if(lastFiles.contains(file) && !currentFiles.contains(file))
-                    deletedFiles.add(file);
             for(String entry : deletedFiles) System.out.println(entry + " - deleted file");
 
             for(File file : FileUtils.getAllFilesFromDirectory(directory)) {
@@ -90,6 +81,55 @@ public class Repository {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Set<String> getCreatedFiles() {
+        Set<String> currentFiles = new HashSet<>();
+        Set<String> lastFiles = new HashSet<>(latestSnapshotFiles);
+
+        for(File file : FileUtils.getAllFilesFromDirectory(directory)) currentFiles.add(file.getName());
+
+        Set<String> newFiles = new HashSet<>();
+        for(String file : currentFiles)
+            if(!lastFiles.contains(file))
+                newFiles.add(file);
+
+        return newFiles;
+    }
+
+    public Set<String> getDeletedFiles() {
+        Set<String> currentFiles = new HashSet<>();
+        Set<String> lastFiles = new HashSet<>(latestSnapshotFiles);
+
+        for(File file : FileUtils.getAllFilesFromDirectory(directory)) currentFiles.add(file.getName());
+
+        Set<String> deletedFiles = new HashSet<>();
+        for(String file : lastFiles)
+            if(lastFiles.contains(file) && !currentFiles.contains(file))
+                deletedFiles.add(file);
+
+        return deletedFiles;
+    }
+
+    public Set<String> getModifiedFiles() {
+        Set<String> result = new HashSet<>();
+
+        Set<String> newFiles = getCreatedFiles();
+        Set<String> deletedFiles = getDeletedFiles();
+
+        try {
+            for(File file : FileUtils.getAllFilesFromDirectory(directory)) {
+                if(newFiles.contains(file.getName()) || deletedFiles.contains(file.getName())) continue;
+
+                LocalDateTime fileLastModifiedDateTime =
+                        LocalDateTime.ofInstant(Files.getLastModifiedTime(file.toPath()).toInstant(), ZoneId.systemDefault());
+                if(fileLastModifiedDateTime.isAfter(latestSnapshotDateTime)) result.add(file.getName());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     public LocalDateTime getLatestSnapshotDateTime() {
