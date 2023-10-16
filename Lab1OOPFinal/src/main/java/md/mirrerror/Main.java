@@ -46,7 +46,7 @@ public class Main {
                         new GraduateStudentCommand(), new BatchUpdateCommand()
                 )
         );
-        logger.info("Registered the commands.");
+        logger.info("Registered the md.mirrerror.commands.");
 
         MenuUtils.sendMainMenuHelpMessage();
 
