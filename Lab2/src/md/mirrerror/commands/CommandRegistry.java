@@ -1,4 +1,4 @@
-package commands;
+package md.mirrerror.commands;
 
 import java.util.ArrayList;
 import java.util.Collections;

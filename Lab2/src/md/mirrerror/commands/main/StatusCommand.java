@@ -1,6 +1,7 @@
-package commands.main;
+package md.mirrerror.commands.main;
 
-import commands.Command;
+import md.mirrerror.Main;
+import md.mirrerror.commands.Command;
 
 public class StatusCommand extends Command {
     public StatusCommand() {
@@ -9,6 +10,6 @@ public class StatusCommand extends Command {
 
     @Override
     public void onCommand(String[] args) {
-
+        Main.getRepository().printStatus();
     }
 }

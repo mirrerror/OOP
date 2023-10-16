@@ -1,4 +1,4 @@
-package commands;
+package md.mirrerror.commands;
 
 public abstract class Command {
 
