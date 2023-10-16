@@ -19,7 +19,7 @@ public class InfoCommand extends Command {
             return;
         }
 
-        file = new File(args[0]);
+        file = new File(Main.getRepository().getDirectory().getName() + "/" + args[0]);
 
         if(!file.exists()) {
             System.out.println("File with the specified name does not exist.");

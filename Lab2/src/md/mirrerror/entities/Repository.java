@@ -5,6 +5,7 @@ import md.mirrerror.utils.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashSet;
@@ -27,7 +28,35 @@ public class Repository {
     }
 
     public void printInfo(File file) {
-        System.out.println("Information about \"" + file.getName() + "\":");
+        try {
+            System.out.println("Information about \"" + file.getName() + "\":");
+
+            String extension = FileUtils.getFileExtension(file);
+            BasicFileAttributes attributes = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
+
+            System.out.println("Extension: " + extension);
+            System.out.println("Created at: " + attributes.creationTime());
+            System.out.println("Updated at: " + attributes.lastModifiedTime());
+
+            if(extension.equalsIgnoreCase("png") || extension.equalsIgnoreCase("jpg")) {
+                int[] imageSize = FileUtils.getImageSize(file);
+                System.out.println("Image dimensions: " + imageSize[0] + "x" + imageSize[1]);
+            }
+
+            if(extension.equalsIgnoreCase("txt")) {
+                System.out.println("Line count: " + FileUtils.countLinesInFile(file));
+                System.out.println("Word count: " + FileUtils.countWordsInFile(file));
+                System.out.println("Character count: " + FileUtils.countCharactersInFile(file));
+            }
+
+            if(extension.equalsIgnoreCase("py") || extension.equalsIgnoreCase("java")) {
+                System.out.println("Line count: " + FileUtils.countLinesInFile(file));
+                System.out.println("Class count: " + FileUtils.countClassesInFile(file));
+                System.out.println("Method count: " + FileUtils.countMethodsInFile(file));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void printStatus() {

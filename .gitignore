@@ -47,3 +47,7 @@ build/
 /applogs.log
 /out/
 /test.txt
+/testrepo/Main.java
+/testrepo/quadratures.py
+/testrepo/Test.java
+/testrepo/test.py
