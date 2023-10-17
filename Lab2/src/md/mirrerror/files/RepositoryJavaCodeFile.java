@@ -9,13 +9,10 @@ import java.util.regex.Pattern;
 
 public class RepositoryJavaCodeFile extends RepositoryCodeFile {
 
-    private File file;
-
     private static final Pattern JAVA_METHOD_PATTERN = Pattern.compile("\\s*\\w+\\s+\\w+\\s*\\(.*\\)\\s*\\{");
 
     public RepositoryJavaCodeFile(File file) {
         super(file);
-        this.file = file;
 
         if(!getExtension().equalsIgnoreCase("java"))
             throw new IllegalArgumentException(getExtension() + " is not a java file.");
@@ -25,7 +22,7 @@ public class RepositoryJavaCodeFile extends RepositoryCodeFile {
     public int countMethods() {
         int methodCount = 0;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(super.getFile()))) {
             String line;
 
             while ((line = br.readLine()) != null) {
@@ -48,7 +45,7 @@ public class RepositoryJavaCodeFile extends RepositoryCodeFile {
         int classCount = 0;
         boolean insideClass = false;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(super.getFile()))) {
             String line;
 
             while ((line = br.readLine()) != null) {
@@ -81,15 +78,5 @@ public class RepositoryJavaCodeFile extends RepositoryCodeFile {
         }
 
         return -1;
-    }
-
-    @Override
-    public File getFile() {
-        return file;
-    }
-
-    @Override
-    public void setFile(File file) {
-        this.file = file;
     }
 }
