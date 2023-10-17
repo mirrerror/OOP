@@ -11,7 +11,6 @@ import md.mirrerror.entities.Repository;
 import md.mirrerror.managers.RepositoryManager;
 import md.mirrerror.tasks.FileCheckTask;
 
-import java.io.File;
 import java.util.List;
 import java.util.Scanner;
 
@@ -38,7 +37,7 @@ public class Main {
                 )
         );
 
-        repository = repositoryManager.registerRepository(new File("testrepo"));
+        repository = repositoryManager.registerRepository("testrepo");
 
         sendHelpMessage();
 
