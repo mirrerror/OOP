@@ -1,6 +1,7 @@
 package md.mirrerror.entities;
 
 import md.mirrerror.Main;
+import md.mirrerror.files.*;
 import md.mirrerror.utils.FileUtils;
 
 import java.io.File;
@@ -31,6 +32,10 @@ public class Repository {
 
     public void printInfo(File file) {
         try {
+            RepositoryFile repositoryFile = new RepositoryFile(file);
+            RepositoryImageFile repositoryImageFile = new RepositoryImageFile(file);
+            RepositoryCodeFile repositoryCodeFile = null;
+
             System.out.println("Information about \"" + file.getName() + "\":");
 
             String extension = FileUtils.getFileExtension(file);
@@ -41,20 +46,23 @@ public class Repository {
             System.out.println("Updated at: " + attributes.lastModifiedTime());
 
             if(extension.equalsIgnoreCase("png") || extension.equalsIgnoreCase("jpg")) {
-                int[] imageSize = FileUtils.getImageSize(file);
+                int[] imageSize = repositoryImageFile.getImageDimensions();
                 System.out.println("Image dimensions: " + imageSize[0] + "x" + imageSize[1]);
             }
 
             if(extension.equalsIgnoreCase("txt")) {
-                System.out.println("Line count: " + FileUtils.countLinesInFile(file));
-                System.out.println("Word count: " + FileUtils.countWordsInFile(file));
-                System.out.println("Character count: " + FileUtils.countCharactersInFile(file));
+                System.out.println("Line count: " + repositoryFile.countLines());
+                System.out.println("Word count: " + repositoryFile.countWords());
+                System.out.println("Character count: " + repositoryFile.countCharacters());
             }
 
-            if(extension.equalsIgnoreCase("py") || extension.equalsIgnoreCase("java")) {
-                System.out.println("Line count: " + FileUtils.countLinesInFile(file));
-                System.out.println("Class count: " + FileUtils.countClassesInFile(file));
-                System.out.println("Method count: " + FileUtils.countMethodsInFile(file));
+            if(extension.equalsIgnoreCase("py")) repositoryCodeFile = new RepositoryPythonCodeFile(file);
+            if(extension.equalsIgnoreCase("java")) repositoryCodeFile = new RepositoryJavaCodeFile(file);
+
+            if(repositoryCodeFile != null) {
+                System.out.println("Line count: " + repositoryCodeFile.countLines());
+                System.out.println("Class count: " + repositoryCodeFile.countClasses());
+                System.out.println("Method count: " + repositoryCodeFile.countMethods());
             }
         } catch (IOException e) {
             e.printStackTrace();
