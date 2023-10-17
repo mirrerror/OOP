@@ -17,12 +17,12 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static boolean isAppEnabled;
+    private static boolean isRunning;
     private static Repository repository;
     private static FileCheckTask fileCheckTask;
 
     public static void main(String[] args) {
-        isAppEnabled = true;
+        isRunning = true;
         Scanner scanner = new Scanner(System.in);
         CommandParser commandParser = new CommandParser();
         CommandRegistry commandRegistry = new CommandRegistry();
@@ -44,7 +44,7 @@ public class Main {
 
         fileCheckTask.initialize();
 
-        while(isAppEnabled) {
+        while(isRunning) {
 
             String commandString = scanner.nextLine();
             boolean commandFound = false;
@@ -79,12 +79,8 @@ public class Main {
                 """);
     }
 
-    public static boolean isAppEnabled() {
-        return isAppEnabled;
-    }
-
-    public static void setAppEnabled(boolean isAppEnabled) {
-        Main.isAppEnabled = isAppEnabled;
+    public static void setRunning(boolean isRunning) {
+        Main.isRunning = isRunning;
     }
 
     public static Repository getRepository() {

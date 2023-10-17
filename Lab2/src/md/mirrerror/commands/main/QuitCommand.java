@@ -12,6 +12,6 @@ public class QuitCommand extends Command {
     @Override
     public void onCommand(String[] args) {
         System.out.println("Disabling the app...");
-        Main.setAppEnabled(false);
+        Main.setRunning(false);
     }
 }
