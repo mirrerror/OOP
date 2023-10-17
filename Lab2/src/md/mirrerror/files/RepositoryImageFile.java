@@ -14,7 +14,7 @@ public class RepositoryImageFile {
     public RepositoryImageFile(File file) {
         this.file = file;
 
-        if(!getExtension().equalsIgnoreCase("png") || !getExtension().equalsIgnoreCase("jpg"))
+        if(!getExtension().equalsIgnoreCase("png") && !getExtension().equalsIgnoreCase("jpg"))
             throw new IllegalArgumentException(getExtension() + " is not a picture file.");
     }
 
