@@ -33,12 +33,12 @@ public class Repository {
     public void printInfo(File file) {
         try {
             RepositoryFile repositoryFile = new RepositoryFile(file);
-            RepositoryImageFile repositoryImageFile = new RepositoryImageFile(file);
+            RepositoryImageFile repositoryImageFile;
             RepositoryCodeFile repositoryCodeFile = null;
 
             System.out.println("Information about \"" + file.getName() + "\":");
 
-            String extension = FileUtils.getFileExtension(file);
+            String extension = repositoryFile.getExtension();
             BasicFileAttributes attributes = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
 
             System.out.println("Extension: " + extension);
@@ -46,6 +46,7 @@ public class Repository {
             System.out.println("Updated at: " + attributes.lastModifiedTime());
 
             if(extension.equalsIgnoreCase("png") || extension.equalsIgnoreCase("jpg")) {
+                repositoryImageFile = new RepositoryImageFile(file);
                 int[] imageSize = repositoryImageFile.getImageDimensions();
                 System.out.println("Image dimensions: " + imageSize[0] + "x" + imageSize[1]);
             }
