@@ -25,8 +25,7 @@ public class Repository {
 
     public void commit() {
         latestSnapshotDateTime = LocalDateTime.now();
-        latestSnapshotFiles = new HashSet<>();
-        for(File file : FileUtils.getAllFilesFromDirectory(directory)) latestSnapshotFiles.add(file.getName());
+        latestSnapshotFiles = getCurrentFiles();
         Main.getFileCheckTask().clearCache();
     }
 
