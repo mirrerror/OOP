@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class RepositoryJavaCodeFile extends RepositoryCodeFile {
 
-    private static final Pattern JAVA_METHOD_PATTERN = Pattern.compile("\\s*\\w+\\s+\\w+\\s*\\(.*\\)\\s*\\{");
+    private static final Pattern JAVA_METHOD_PATTERN = Pattern.compile("\\s*\\w+\\s+\\w+\\s*\\(.*\\)\\s*(throws\\s+\\w+(,\\s*\\w+)*)?\\s*\\{");
 
     public RepositoryJavaCodeFile(File file) {
         super(file);
