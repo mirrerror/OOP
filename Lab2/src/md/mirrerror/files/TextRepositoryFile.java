@@ -8,11 +8,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
-public class GeneralRepositoryFile implements IRepositoryFile {
+public class TextRepositoryFile implements IRepositoryFile {
 
     private File file;
 
-    public GeneralRepositoryFile(File file) {
+    public TextRepositoryFile(File file) {
         this.file = file;
     }
 

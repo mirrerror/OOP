@@ -2,7 +2,7 @@ package md.mirrerror.files;
 
 import java.io.File;
 
-public abstract class RepositoryCodeFile extends GeneralRepositoryFile {
+public abstract class RepositoryCodeFile extends TextRepositoryFile {
     public RepositoryCodeFile(File file) {
         super(file);
     }
