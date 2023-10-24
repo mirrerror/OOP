@@ -33,21 +33,26 @@ public class FileCheckTask extends TimerTask {
 
     @Override
     public void run() {
-        for(String entry : Main.getRepository().getCreatedFiles()) {
-            if(sentCreated.contains(entry)) continue;
-            System.out.println("A new file has been created: " + entry);
-            sentCreated.add(entry);
-        }
-        for(String entry : Main.getRepository().getDeletedFiles()) {
-            if(sentDeleted.contains(entry)) continue;
-            System.out.println("A file has been deleted: " + entry);
-            sentDeleted.add(entry);
-        }
-        for(String entry : Main.getRepository().getModifiedFiles()) {
-            if(sentModified.contains(entry)) continue;
-            System.out.println("A file has been modified: " + entry);
-            sentModified.add(entry);
-        }
+        Main.getRepository().getCreatedFiles().stream()
+                .filter(entry -> !sentCreated.contains(entry))
+                .forEach(entry -> {
+                    System.out.println("A new file has been created: " + entry);
+                    sentCreated.add(entry);
+                });
+
+        Main.getRepository().getDeletedFiles().stream()
+                .filter(entry -> !sentDeleted.contains(entry))
+                .forEach(entry -> {
+                    System.out.println("A file has been deleted: " + entry);
+                    sentDeleted.add(entry);
+                });
+
+        Main.getRepository().getModifiedFiles().stream()
+                .filter(entry -> !sentModified.contains(entry))
+                .forEach(entry -> {
+                    System.out.println("A file has been modified: " + entry);
+                    sentModified.add(entry);
+                });
     }
 
     public Timer getFileCheckTimer() {

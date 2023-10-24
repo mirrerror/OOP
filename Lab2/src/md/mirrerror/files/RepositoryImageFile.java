@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class RepositoryImageFile {
+public class RepositoryImageFile implements IRepositoryFile {
 
     private File file;
 

@@ -31,7 +31,7 @@ public class Repository {
 
     public void printInfo(File file) {
         try {
-            RepositoryFile repositoryFile = new RepositoryFile(file);
+            GeneralRepositoryFile repositoryFile = new GeneralRepositoryFile(file);
             RepositoryImageFile repositoryImageFile;
             RepositoryCodeFile repositoryCodeFile = null;
 
