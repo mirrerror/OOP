@@ -25,8 +25,7 @@ public class Repository {
 
     public void commit() {
         latestSnapshotDateTime = LocalDateTime.now();
-        latestSnapshotFiles = new HashSet<>();
-        for(File file : FileUtils.getAllFilesFromDirectory(directory)) latestSnapshotFiles.add(file.getName());
+        latestSnapshotFiles = getCurrentFiles();
         Main.getFileCheckTask().clearCache();
     }
 
@@ -36,39 +35,33 @@ public class Repository {
             RepositoryImageFile repositoryImageFile;
             RepositoryCodeFile repositoryCodeFile = null;
 
-            System.out.println("Information about \"" + file.getName() + "\":");
-
             String extension = repositoryFile.getExtension();
             BasicFileAttributes attributes = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
 
-            System.out.println("Extension: " + extension);
-            System.out.println("Created at: " + attributes.creationTime());
-            System.out.println("Updated at: " + attributes.lastModifiedTime());
+            System.out.printf("Information about \"%s\":%nExtension: %s%nCreated at: %s%nUpdated at: %s%n",
+                    file.getName(), extension, attributes.creationTime(), attributes.lastModifiedTime());
 
             if(extension.equalsIgnoreCase("png") || extension.equalsIgnoreCase("jpg")) {
                 repositoryImageFile = new RepositoryImageFile(file);
                 int[] imageSize = repositoryImageFile.getImageDimensions();
-                System.out.println("Image dimensions: " + imageSize[0] + "x" + imageSize[1]);
+                System.out.printf("Image dimensions: %dx%d%n", imageSize[0], imageSize[1]);
             }
 
-            if(extension.equalsIgnoreCase("txt")) {
-                System.out.println("Line count: " + repositoryFile.countLines());
-                System.out.println("Word count: " + repositoryFile.countWords());
-                System.out.println("Character count: " + repositoryFile.countCharacters());
-            }
+            if(extension.equalsIgnoreCase("txt"))
+                System.out.printf("Line count: %d%nWord count: %d%nCharacter count: %d%n",
+                        repositoryFile.countLines(), repositoryFile.countWords(), repositoryFile.countCharacters());
 
             if(extension.equalsIgnoreCase("py")) repositoryCodeFile = new RepositoryPythonCodeFile(file);
             if(extension.equalsIgnoreCase("java")) repositoryCodeFile = new RepositoryJavaCodeFile(file);
 
-            if(repositoryCodeFile != null) {
-                System.out.println("Line count: " + repositoryCodeFile.countLines());
-                System.out.println("Class count: " + repositoryCodeFile.countClasses());
-                System.out.println("Method count: " + repositoryCodeFile.countMethods());
-            }
+            if(repositoryCodeFile != null)
+                System.out.printf("Line count: %d%nClass count: %d%nMethod count: %d%n",
+                        repositoryCodeFile.countLines(), repositoryCodeFile.countClasses(), repositoryCodeFile.countMethods());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     public void printStatus() {
         System.out.println("Created the snapshot at: " + latestSnapshotDateTime);
@@ -92,11 +85,15 @@ public class Repository {
         }
     }
 
-    public Set<String> getCreatedFiles() {
+    private Set<String> getCurrentFiles() {
         Set<String> currentFiles = new HashSet<>();
-        Set<String> lastFiles = new HashSet<>(latestSnapshotFiles);
-
         for(File file : FileUtils.getAllFilesFromDirectory(directory)) currentFiles.add(file.getName());
+        return currentFiles;
+    }
+
+    public Set<String> getCreatedFiles() {
+        Set<String> currentFiles = getCurrentFiles();
+        Set<String> lastFiles = new HashSet<>(latestSnapshotFiles);
 
         Set<String> newFiles = new HashSet<>();
         for(String file : currentFiles)
@@ -107,10 +104,8 @@ public class Repository {
     }
 
     public Set<String> getDeletedFiles() {
-        Set<String> currentFiles = new HashSet<>();
+        Set<String> currentFiles = getCurrentFiles();
         Set<String> lastFiles = new HashSet<>(latestSnapshotFiles);
-
-        for(File file : FileUtils.getAllFilesFromDirectory(directory)) currentFiles.add(file.getName());
 
         Set<String> deletedFiles = new HashSet<>();
         for(String file : lastFiles)
