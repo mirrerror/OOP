@@ -61,10 +61,12 @@ public class TextRepositoryFile implements IRepositoryFile {
         return -1;
     }
 
+    @Override
     public String getExtension() {
         return FileUtils.getFileExtension(file);
     }
 
+    @Override
     public File getFile() {
         return file;
     }

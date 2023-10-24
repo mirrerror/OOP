@@ -36,10 +36,12 @@ public class RepositoryImageFile implements IRepositoryFile {
         return size;
     }
 
+    @Override
     public String getExtension() {
         return FileUtils.getFileExtension(file);
     }
 
+    @Override
     public File getFile() {
         return file;
     }
