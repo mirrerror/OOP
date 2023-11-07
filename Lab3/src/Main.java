@@ -17,9 +17,9 @@ public class Main {
         for(int i = min; i <= max; i++) linkedListQueue.enqueue(i);
         System.out.println("Linked List Queue: " + linkedListQueue);
 
-        CustomPriorityQueue<Integer> priorityQueueWrapper = new CustomPriorityQueue<>();
-        for(int i = min; i <= max; i++) priorityQueueWrapper.enqueue(i);
-        System.out.println("Custom Priority Queue: " + priorityQueueWrapper);
+        CustomPriorityQueue<Integer> customPriorityQueue = new CustomPriorityQueue<>();
+        for(int i = min; i <= max; i++) customPriorityQueue.enqueue(i);
+        System.out.println("Custom Priority Queue: " + customPriorityQueue);
 
         ArrayStack<Integer> arrayStack = new ArrayStack<>();
         for(int i = min; i <= max; i++) arrayStack.push(i);
